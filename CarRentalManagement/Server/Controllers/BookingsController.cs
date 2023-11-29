@@ -33,10 +33,10 @@ namespace CarRentalManagement.Server.Controllers
         //public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
         public async Task<IActionResult> GetBookings()
         {
-            //Refactored
-            //return await _context.Bookings.ToListAsync();
-            var Bookings = await _unitOfWork.Bookings.GetAll();
-            return Ok(Bookings);
+			//Refactored
+			//return await _context.Bookings.ToListAsync();
+			var Bookings = await _unitOfWork.Bookings.GetAll(includes: q => q.Include(x =>x.Vehicle).Include(x => x.Customer));
+			return Ok(Bookings);
         }
 
         // GET: api/Bookings/5
