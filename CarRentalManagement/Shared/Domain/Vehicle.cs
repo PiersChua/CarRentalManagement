@@ -10,7 +10,7 @@ namespace CarRentalManagement.Shared.Domain
 	{
         public int Year { get; set; }
 
-        public string? LicensePlateNumber { get; set; }
+        public string LicensePlateNumber { get; set; }
 
         public int MakeId { get; set; }
 
@@ -25,5 +25,6 @@ namespace CarRentalManagement.Shared.Domain
         public virtual Colour? Colour { get; set; }
 
         public virtual List<Booking>? Bookings { get; set; }
+        public double RentalRate { get; set; }
     }
 }
