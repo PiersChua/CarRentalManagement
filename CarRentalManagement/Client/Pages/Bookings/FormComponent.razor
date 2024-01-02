@@ -1,11 +1,6 @@
-﻿@page "/bookings/create"
-@inject HttpClient _client
-@inject NavigationManager _navManager
+﻿@inject HttpClient _client
 
-<h3 class="card-title">Create New Bookings</h3>
-<hr />
-<br />
-<EditForm Model="@booking" OnValidSubmit="CreateBooking">
+<EditForm Model="@booking" OnValidSubmit="OnValidSubmit">
 	<DataAnnotationsValidator />
 	<ValidationSummary />
 	<div class="form-group">
@@ -13,7 +8,7 @@
 		<div>
 			<InputSelect @bind-Value="booking.VehicleId" class="form-control">
 				<option value="">-- Select Vehicle --</option>
-				@if(Vehicles!=null)
+				@if (Vehicles != null)
 				{
 					foreach (var vehicle in Vehicles)
 					{
@@ -29,7 +24,7 @@
 		<div>
 			<InputSelect @bind-Value="booking.CustomerId" class="form-control">
 				<option value="">-- Select Customer --</option>
-				@if(Vehicles!=null)
+				@if (Vehicles != null)
 				{
 					foreach (var customer in Customers)
 					{
@@ -57,30 +52,22 @@
 			</div>
 		</div>
 	}
-	<button type="submit" class="btn btn-success btn-block">Create Booking</button>
+	<button type="submit" class="btn btn-success btn-block">@ButtonText</button>
 
 </EditForm>
 
-
 @code {
-	Booking booking = new Booking();
+	[Parameter] public Booking? booking { get; set; }
+	[Parameter] public string ButtonText { get; set; } = "Save";
+	[Parameter] public EventCallback OnValidSubmit { get; set; }
 
-
-	private async Task CreateBooking()
-	{
-		await _client.PostAsJsonAsync($"{Endpoints.BookingsEndpoint}", booking);
-		_navManager.NavigateTo("/bookings/");
-	}
-}
-
-
-@code {
 	private IList<Vehicle>? Vehicles;
 	private IList<Customer>? Customers;
+
 
 	protected async override Task OnInitializedAsync()
 	{
 		Vehicles = await _client.GetFromJsonAsync<List<Vehicle>>($"{Endpoints.VehiclesEndpoint}");
-		Customers = await _client.GetFromJsonAsync<List<Customer>>($"{Endpoints.CustomersEndpoint}");
+		Customers = await _client.GetFromJsonAsync<List<Customer>>($"{ Endpoints.CustomersEndpoint}");
 	}
 }
